@@ -16,7 +16,38 @@ function addPurchase(){
     $( '#purchaseNameIn').val( '' );  // used as a setter to set empty string
     $( '#purchasePriceIn' ).val( '' );
     // calculate remainingBudget
+    calculateRemainingBudget();
 } // end addPurchase
+
+function calculateRemainingBudget(){
+  console.log( 'in calculateRemainingBudget');
+  // loop through purchases array
+  let totalPrices = 0;
+  for( let i = 0; i< purchases.length; i++){
+    totalPrices += Number( purchases[ i ].price );
+    // for each purchase, add up total of all prices
+  } // end for loop
+  console.log( 'totalPrices: ', totalPrices );
+  // subtract totalPrices from budget for remainingBudget
+  const remainingBudget = budget -  totalPrices;
+  //display remaining budget
+  let el = $( '#remainingBudgetOut');
+  el.empty();
+  el.append( remainingBudget );
+}  // end calculateRemainingBudget
+
+function displayPurchases(){
+  console.log( 'in displayPurchases' );
+  // target output by ID
+  let el = $( '#purchasesOut' );
+  // empty
+  el.empty();
+  // loop through purchases array
+  for( purchase of purchases ){
+    // for each purchase, create a list item
+    el.append( `<li>` + purchase.name + `: $` + purchase.price +`</li>`);   // couldn't get this to show on the DOM
+  } // end of for loop
+} // end displayPurchases
 
 function readyNow(){            // the is the function we're running at the top
   // display budget
@@ -26,4 +57,8 @@ function readyNow(){            // the is the function we're running at the top
   el.append( budget );
   //handle click event
   $( '#addPurchaseButton' ).on( 'click', addPurchase );
+  // initialize display
+  calculateRemainingBudget();
+  // update the DOM
+  displayPurchases();
 }  // end readyNow
